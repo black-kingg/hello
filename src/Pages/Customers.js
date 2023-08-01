@@ -1,3 +1,7 @@
 export default function Customers() {
-  return <hi>ur papa</hi>;
+  return (
+    <div className="App bg-gray-300 min-h-screen">
+      <hi>ur papa</hi>
+    </div>
+  );
 }
