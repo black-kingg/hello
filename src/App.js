@@ -1,21 +1,21 @@
 import "./index.css";
-import Employee from "./Components/Employee";
-import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
-import AddEmployee from "./Components/AddEmployee";
-import EditEmployee from "./Components/EditEmployee";
 import Header from "./Components/Header";
 import Employees from "./Pages/Employees";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Customers from "./Pages/Customers";
+import Dictionary from "./Pages/Dictionary";
+import Definition from "./Pages/Definition";
 
 function App() {
   return (
     <BrowserRouter>
       <Header>
         <Routes>
-          <Route path="/Employees" element={<Employees />} />
-          <Route path="/Customers" element={<Customers />} />
+          <Route path="/" element={<Employees />} />
+          <Route path="/employees" element={<Employees />} />
+          <Route path="/customers" element={<Customers />} />
+          <Route path="/dictionary" element={<Dictionary />} />
+          <Route path="/definition" element={<Definition />} />
         </Routes>
       </Header>
     </BrowserRouter>
