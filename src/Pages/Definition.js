@@ -33,6 +33,7 @@ export default function Definition() {
         setWord(data[0].meanings);
       })
       .catch((e) => {
+        setError(true);
         console.log(e.message);
       });
   }, []);
