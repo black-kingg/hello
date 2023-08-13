@@ -6,16 +6,19 @@ export default function Customers() {
     console.log("fetching...");
     fetch("http://localhost:8000/api/customers/")
       .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
         return response.json();
       })
       .then((data) => {
         console.log(data);
         setCustomers(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
       });
-  });
-  return (
-    <div className="App bg-gray-300 min-h-screen">
-      <h1>ur papa</h1>
-    </div>
-  );
+  }, []);
+
+  return <h1>ur papa</h1>;
 }
