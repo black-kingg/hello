@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 
 export default function Customers() {
   const [customers, setCustomers] = useState();
-  const [notFound, setNotFound] = useState();
   useEffect(() => {
     console.log("fetching...");
     fetch("http://localhost:8000/api/customers/")
@@ -24,7 +23,7 @@ export default function Customers() {
         ? customers.map((customer) => {
             return (
               <p>
-                <Link to={"/customer" + customer.id}>{customer.name}</Link>
+                <Link to={"/customer/" + customer.id}>{customer.name}</Link>
               </p>
             );
           })
