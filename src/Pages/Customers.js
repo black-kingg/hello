@@ -1,24 +1,34 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Customers() {
   const [customers, setCustomers] = useState();
+  const [notFound, setNotFound] = useState();
   useEffect(() => {
     console.log("fetching...");
     fetch("http://localhost:8000/api/customers/")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        setCustomers(data);
+        setCustomers(data.customers);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
   }, []);
 
-  return <h1>ur papa</h1>;
+  return (
+    <p>
+      <h1>Here are our customers:</h1>
+      {customers
+        ? customers.map((customer) => {
+            return (
+              <p>
+                <Link to={"/customer" + customer.id}>{customer.name}</Link>
+              </p>
+            );
+          })
+        : null}
+    </p>
+  );
 }
