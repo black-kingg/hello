@@ -7,7 +7,6 @@ import EditEmployee from "../Components/EditEmployee";
 import Header from "../Components/Header";
 
 function Employees() {
-  const [role, setRole] = useState("dev");
   const [employees, setEmployees] = useState([
     {
       id: 1,
