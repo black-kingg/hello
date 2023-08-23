@@ -29,9 +29,9 @@ export default function Customer() {
       {notFound ? <NotFound /> : null}
       {customer ? (
         <div>
-          <p>{customer.id}</p>
-          <p>{customer.name}</p>
-          <p>{customer.industry}</p>
+          <input type="text" value={customer.id} />
+          <input type="text" value={customer.name} />
+          <input type="text" value={customer.industry} />
         </div>
       ) : null}
       <button
