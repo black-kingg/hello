@@ -6,9 +6,14 @@ import { baseUrl } from "../shared";
 export default function Customer() {
   const { id } = useParams();
   const navigate = useNavigate();
-
   const [customer, setCustomer] = useState();
+  const [tempCustomer, setTempCustomer] = useState();
   const [notFound, setNotFound] = useState();
+
+  useEffect(() => {
+    console.log("customer :", customer);
+  });
+
   useEffect(() => {
     const url = baseUrl + "api/customers/" + id;
     fetch(url)
@@ -22,6 +27,7 @@ export default function Customer() {
       })
       .then((data) => {
         setCustomer(data.customer);
+        setTempCustomer(data.customer);
       });
   }, []);
   return (
@@ -29,9 +35,20 @@ export default function Customer() {
       {notFound ? <NotFound /> : null}
       {customer ? (
         <div>
-          <input type="text" value={customer.id} />
-          <input type="text" value={customer.name} />
-          <input type="text" value={customer.industry} />
+          <input class="m-2 block px-2" type="text" value={tempCustomer.id} />
+          <input
+            class="m-2 block px-2"
+            type="text"
+            value={tempCustomer.name}
+            onChange={(e) => {
+              setTempCustomer({ ...tempCustomer, name: e.target.value });
+            }}
+          />
+          <input
+            class="m-2 block px-2"
+            type="text"
+            value={tempCustomer.industry}
+          />
         </div>
       ) : null}
       <button
