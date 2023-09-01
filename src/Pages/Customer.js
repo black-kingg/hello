@@ -12,9 +12,16 @@ export default function Customer() {
   const [changed, setChanged] = useState(false);
 
   useEffect(() => {
-    console.log("customer :", customer);
-    console.log("temp customer :", tempCustomer);
-    console.log("changed :", setChanged);
+    let equal = true;
+    if (customer.name !== tempCustomer.name) {
+      equal = false;
+    }
+    if (customer.industry !== tempCustomer.industry) {
+      equal = false;
+    }
+    if (equal) {
+      setChanged(false);
+    }
   });
 
   useEffect(() => {
@@ -50,6 +57,7 @@ export default function Customer() {
       })
       .catch();
   }
+
   return (
     <>
       {notFound ? <NotFound /> : null}
