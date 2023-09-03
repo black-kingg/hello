@@ -12,16 +12,13 @@ export default function Customer() {
   const [changed, setChanged] = useState(false);
 
   useEffect(() => {
+    if (!customer) return;
+    if (!customer) return;
     let equal = true;
-    if (customer.name !== tempCustomer.name) {
-      equal = false;
-    }
-    if (customer.industry !== tempCustomer.industry) {
-      equal = false;
-    }
-    if (equal) {
-      setChanged(false);
-    }
+    if (customer.name !== tempCustomer.name) equal = false;
+    if (customer.industry !== tempCustomer.industry) equal = false;
+
+    if (equal) setChanged(false);
   });
 
   useEffect(() => {
@@ -87,6 +84,7 @@ export default function Customer() {
           {changed ? (
             <>
               <button
+                className="m-2"
                 onClick={(e) => {
                   setTempCustomer({
                     ...tempCustomer,
@@ -96,7 +94,9 @@ export default function Customer() {
               >
                 Cancel
               </button>
-              <button onClick={updateCustomer}>Save</button>
+              <button className="m-2" onClick={updateCustomer}>
+                Save
+              </button>
             </>
           ) : null}
         </div>
