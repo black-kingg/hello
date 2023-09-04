@@ -10,6 +10,7 @@ export default function Customer() {
   const [tempCustomer, setTempCustomer] = useState();
   const [notFound, setNotFound] = useState();
   const [changed, setChanged] = useState(false);
+  const [error, setError] = useState();
 
   useEffect(() => {
     if (!customer) return;
@@ -46,13 +47,19 @@ export default function Customer() {
       body: JSON.stringify(tempCustomer),
     })
       .then((response) => {
+        if (!response.ok) throw new Error("something went wrong");
         return response.json();
       })
       .then((data) => {
+        setCustomer(data.customer);
         setChanged(false);
         console.log(data);
+        setError(undefined);
       })
-      .catch();
+      .catch((e) => {
+        console.log("e", e);
+        setError(e.mesage);
+      });
   }
 
   return (
@@ -99,31 +106,33 @@ export default function Customer() {
               </button>
             </>
           ) : null}
+          <button
+            className="m-2"
+            onClick={(e) => {
+              const url = baseUrl + "api/customers/" + id;
+              fetch(url, {
+                method: "DELETE",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              })
+                .then((response) => {
+                  if (!response.ok) {
+                    throw new Error("Something went wrong");
+                  }
+
+                  navigate("/customers");
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
+            }}
+          >
+            Delete
+          </button>
+          (error? <p>Error</p>:null)
         </div>
       ) : null}
-      <button
-        onClick={(e) => {
-          const url = baseUrl + "api/customers/" + id;
-          fetch(url, {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
-            .then((response) => {
-              if (!response.ok) {
-                throw new Error("Something went wrong");
-              }
-
-              navigate("/customers");
-            })
-            .catch((e) => {
-              console.log(e);
-            });
-        }}
-      >
-        Delete
-      </button>
       <br />
       <Link to="/customers">Go Back</Link>
     </>
