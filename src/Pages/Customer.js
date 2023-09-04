@@ -32,7 +32,10 @@ export default function Customer() {
           setNotFound(true);
         }
 
-        if (!response.ok) throw new Error("Something went wrong");
+        if (!response.ok) {
+          console.log("response", response);
+          throw new Error("Something went wrong");
+        }
 
         return response.json();
       })
@@ -137,9 +140,9 @@ export default function Customer() {
           >
             Delete
           </button>
-          (error? <p>Error</p>:null)
         </div>
       ) : null}
+      {error ? <p>Error</p> : null}
       <br />
       <Link to="/customers">Go Back</Link>
     </>
