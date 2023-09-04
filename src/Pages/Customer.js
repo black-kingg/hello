@@ -31,11 +31,18 @@ export default function Customer() {
           //render a 404 component
           setNotFound(true);
         }
+
+        if (!response.ok) throw new Error("Something went wrong");
+
         return response.json();
       })
       .then((data) => {
         setCustomer(data.customer);
         setTempCustomer(data.customer);
+        setError(undefined);
+      })
+      .catch((e) => {
+        setError(e.message);
       });
   }, []);
 
