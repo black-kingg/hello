@@ -11,9 +11,9 @@ export default function AddCustomer(props) {
   const handleShow = () => setShow(true);
 
   return (
-    <div className="flex flex-wrap justify-center">
+    <div>
       <button
-        className="m-2 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
+        className="block m-2 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
         onClick={props.toggleShow}
       >
         + Add Customer

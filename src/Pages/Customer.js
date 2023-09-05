@@ -71,7 +71,7 @@ export default function Customer() {
   }
 
   return (
-    <>
+    <div className="p-3">
       {notFound ? <NotFound /> : null}
       {customer ? (
         <div>
@@ -119,9 +119,9 @@ export default function Customer() {
             </div>
           </form>
           {changed ? (
-            <>
+            <div className="mb-2">
               <button
-                className="m-2"
+                className="bg-slate-400 hover:bg-slate-500 text-white font-bold py-2 px-4 mr-2 rounded"
                 onClick={(e) => {
                   setTempCustomer({
                     ...tempCustomer,
@@ -131,39 +131,49 @@ export default function Customer() {
               >
                 Cancel
               </button>
-              <button form="customer" className="m-2" onClick={updateCustomer}>
+              <button
+                form="customer"
+                className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
+                onClick={updateCustomer}
+              >
                 Save
               </button>
-            </>
+            </div>
           ) : null}
-          <button
-            className="m-2"
-            onClick={(e) => {
-              const url = baseUrl + "api/customers/" + id;
-              fetch(url, {
-                method: "DELETE",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              })
-                .then((response) => {
-                  if (!response.ok) {
-                    throw new Error("Something went wrong");
-                  }
-                  navigate("/customers");
+          <div>
+            <button
+              className="bg-slate-800 hover:bg-slate-500 text-white font-bold py-2 px-4 rounded"
+              onClick={(e) => {
+                const url = baseUrl + "api/customers/" + id;
+                fetch(url, {
+                  method: "DELETE",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
                 })
-                .catch((e) => {
-                  setError(e.message);
-                });
-            }}
-          >
-            Delete
-          </button>
+                  .then((response) => {
+                    if (!response.ok) {
+                      throw new Error("Something went wrong");
+                    }
+                    navigate("/customers");
+                  })
+                  .catch((e) => {
+                    setError(e.message);
+                  });
+              }}
+            >
+              Delete
+            </button>
+          </div>
         </div>
       ) : null}
       {error ? <p>Error</p> : null}
       <br />
-      <Link to="/customers">Go Back</Link>
-    </>
+      <Link to="/customers">
+        <button className="hover:no-underline bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">
+          ←Go Back
+        </button>
+      </Link>
+    </div>
   );
 }
