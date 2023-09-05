@@ -48,7 +48,8 @@ export default function Customer() {
       });
   }, []);
 
-  function updateCustomer() {
+  function updateCustomer(e) {
+    e.preventDefault();
     const url = baseUrl + "api/customers/" + id;
     fetch(url, {
       method: "POST",
@@ -74,27 +75,49 @@ export default function Customer() {
       {notFound ? <NotFound /> : null}
       {customer ? (
         <div>
-          <p class="m-2 block px-2" type="text">
-            ID: {tempCustomer.id}
-          </p>
-          <input
-            class="m-2 block px-2"
-            type="text"
-            value={tempCustomer.name}
-            onChange={(e) => {
-              setChanged(true);
-              setTempCustomer({ ...tempCustomer, name: e.target.value });
-            }}
-          />
-          <input
-            class="m-2 block px-2"
-            type="text"
-            value={tempCustomer.industry}
-            onChange={(e) => {
-              setChanged(true);
-              setTempCustomer({ ...tempCustomer, industry: e.target.value });
-            }}
-          />
+          <form
+            className="w-full max-w-sm"
+            id="customer"
+            onSubmit={updateCustomer}
+          >
+            <div className="md:flex md:items-center mb-6">
+              <div className="md:w-1/4">
+                <label for="name">Name</label>
+              </div>
+              <div className="md:w-3/4">
+                <input
+                  id="name"
+                  className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                  type="text"
+                  value={tempCustomer.name}
+                  onChange={(e) => {
+                    setChanged(true);
+                    setTempCustomer({ ...tempCustomer, name: e.target.value });
+                  }}
+                />
+              </div>
+            </div>
+            <div className="md:flex md:items-center mb-6">
+              <div className="md:w-1/4">
+                <label for="industry">Industry</label>
+              </div>
+              <div className="md:w-3/4">
+                <input
+                  id="industry"
+                  className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                  type="text"
+                  value={tempCustomer.industry}
+                  onChange={(e) => {
+                    setChanged(true);
+                    setTempCustomer({
+                      ...tempCustomer,
+                      industry: e.target.value,
+                    });
+                  }}
+                />
+              </div>
+            </div>
+          </form>
           {changed ? (
             <>
               <button
@@ -108,7 +131,7 @@ export default function Customer() {
               >
                 Cancel
               </button>
-              <button className="m-2" onClick={updateCustomer}>
+              <button form="customer" className="m-2" onClick={updateCustomer}>
                 Save
               </button>
             </>
