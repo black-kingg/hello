@@ -33,7 +33,6 @@ export default function Customer() {
         }
 
         if (!response.ok) {
-          console.log("response", response);
           throw new Error("Something went wrong");
         }
 
@@ -63,11 +62,9 @@ export default function Customer() {
       .then((data) => {
         setCustomer(data.customer);
         setChanged(false);
-        console.log(data);
         setError(undefined);
       })
       .catch((e) => {
-        console.log("e", e);
         setError(e.mesage);
       });
   }
@@ -130,11 +127,10 @@ export default function Customer() {
                   if (!response.ok) {
                     throw new Error("Something went wrong");
                   }
-
                   navigate("/customers");
                 })
                 .catch((e) => {
-                  console.log(e);
+                  setError(e.message);
                 });
             }}
           >
