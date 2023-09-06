@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { baseUrl } from "../shared";
 import AddCustomer from "../Components/AddCustomer";
 
@@ -12,10 +12,23 @@ export default function Customers() {
     setShow(!show);
   }
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const url = baseUrl + "api/customers/";
-    fetch(url)
-      .then((response) => response.json())
+    fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer" + localStorage.getItem("access"),
+      },
+    })
+      .then((response) => {
+        if (response.status === 401) {
+          navigate("/login");
+        }
+        return response.json();
+      })
+
       .then((data) => {
         console.log(data);
         setCustomers(data.customers);
@@ -23,7 +36,7 @@ export default function Customers() {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, []);
+  }, [navigate]);
 
   function newCustomer(name, industry) {
     const data = { name: name, industry: industry };

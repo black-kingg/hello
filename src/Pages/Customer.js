@@ -24,12 +24,19 @@ export default function Customer() {
 
   useEffect(() => {
     const url = baseUrl + "api/customers/" + id;
-    fetch(url)
+    fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer" + localStorage.getItem("access"),
+      },
+    })
       .then((response) => {
         if (response.status === 404) {
           //redirect to another page(404 page)  navigate("/404");
           //render a 404 component
           setNotFound(true);
+        } else if (response.status === 401) {
+          navigate("/login");
         }
 
         if (!response.ok) {
