@@ -8,7 +8,6 @@ const navigation = [
 	{ name: "Employees", href: "/Employees" },
 	{ name: "Customers", href: "/Customers" },
 	{ name: "Dictionary", href: "/Dictionary" },
-	{ name: "Calendar", href: "/other2" },
 ];
 
 function classNames(...classes) {
@@ -16,7 +15,7 @@ function classNames(...classes) {
 }
 
 export default function Header(props) {
-	const loggedIn = useContext(LoginContext);
+	const [loggedIn, setLoggedIn] = useContext(LoginContext);
 
 	return (
 		<>
@@ -70,6 +69,12 @@ export default function Header(props) {
 													{item.name}
 												</NavLink>
 											))}
+											<NavLink
+												to={loggedIn ? "/logout" : "/login"}
+												className="rounded-md px-3 py-2 text-sm font-medium hover:no-underline text-gray-300 hover:bg-gray-700 hover:text-white"
+											>
+												{loggedIn ? "Logout" : "Login"}
+											</NavLink>
 										</div>
 									</div>
 								</div>
@@ -100,15 +105,22 @@ export default function Header(props) {
 										href={item.href}
 										className={classNames(
 											item.current
-												? "bg-gray-900 text-white no-underline"
+												? "bg-gray-900 text-white "
 												: "text-gray-300 hover:bg-gray-700 hover:text-white",
-											"block rounded-md px-3 py-2 text-base font-medium"
+											"block rounded-md px-3 py-2 text-base font-medium hover:no-underline"
 										)}
 										aria-current={item.current ? "page" : undefined}
 									>
 										{item.name}
 									</NavLink>
 								))}
+
+								<NavLink
+									to={loggedIn ? "/logout" : "/login"}
+									className="block rounded-md px-3 py-2 text-base font-medium hover:no-underline text-gray-300 hover:bg-gray-700 hover:text-white"
+								>
+									{loggedIn ? "Logout" : "Login"}
+								</NavLink>
 							</div>
 						</Disclosure.Panel>
 					</>

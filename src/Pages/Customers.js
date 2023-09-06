@@ -28,6 +28,7 @@ export default function Customers() {
 		})
 			.then((response) => {
 				if (response.status === 401) {
+					setLoggedIn(false);
 					navigate("/login", {
 						state: {
 							previousUrl: location.pathname,
