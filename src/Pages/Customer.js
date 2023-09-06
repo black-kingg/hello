@@ -27,7 +27,7 @@ export default function Customer() {
     fetch(url, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer" + localStorage.getItem("access"),
+        Authorization: "Bearer " + localStorage.getItem("access"),
       },
     })
       .then((response) => {
@@ -62,7 +62,7 @@ export default function Customer() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer" + localStorage.getItem("access"),
+        Authorization: "Bearer " + localStorage.getItem("access"),
       },
       body: JSON.stringify(tempCustomer),
     })
