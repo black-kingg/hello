@@ -17,9 +17,10 @@ export default function Customers() {
   useEffect(() => {
     const url = baseUrl + "api/customers/";
     fetch(url, {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer" + localStorage.getItem("access"),
+        Authorization: "Bearer " + localStorage.getItem("access"),
       },
     })
       .then((response) => {
