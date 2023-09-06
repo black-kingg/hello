@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { baseUrl } from "../shared";
 import AddCustomer from "../Components/AddCustomer";
+import { LoginContext } from "../App";
 
 export default function Customers() {
+	const [loggedIn, setLoggedIn] = useContext(LoginContext);
 	const [customers, setCustomers] = useState();
 
 	const [show, setShow] = useState(false);
