@@ -1,5 +1,5 @@
 import "./index.css";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import Header from "./Components/Header";
 import Employees from "./Pages/Employees";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -9,13 +9,47 @@ import Dictionary from "./Pages/Dictionary";
 import Definition from "./Pages/Definition";
 import NotFound from "./Components/NotFound";
 import Login from "./Pages/Login";
+import { baseUrl } from "./shared";
+import Register from "./Pages/Register";
 
 export const LoginContext = createContext();
 
 function App() {
-	const [loggedIn, setLoggedIn] = useState(true);
+	useEffect(() => {
+		function refreshTokens() {
+			if (localStorage.refresh) {
+				const url = baseUrl + "api/token/refresh/";
+				fetch(url, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ refresh: localStorage.refresh }),
+				})
+					.then((response) => {
+						return response.json();
+					})
+					.then((data) => {
+						localStorage.access = data.access;
+						localStorage.refresh = data.refresh;
+						setLoggedIn(true);
+					});
+			}
+		}
+		const minutes = 1000 * 60;
+		refreshTokens();
+		setInterval(refreshTokens, minutes * 3);
+	}, []);
+	const [loggedIn, setLoggedIn] = useState(localStorage.access ? true : false);
+	function changeLoggedIn(value) {
+		setLoggedIn(value);
+		if (value === false) {
+			localStorage.clear();
+		}
+	}
+
 	return (
-		<LoginContext.Provider value={[loggedIn, setLoggedIn]}>
+		<LoginContext.Provider value={[loggedIn, changeLoggedIn]}>
 			<BrowserRouter>
 				<Header>
 					<Routes>
@@ -49,6 +83,10 @@ function App() {
 						<Route
 							path="/login"
 							element={<Login />}
+						/>
+						<Route
+							path="/register"
+							element={<Register />}
 						/>
 
 						<Route

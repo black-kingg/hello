@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { NavLink } from "react-router-dom";
 import { LoginContext } from "../App";
@@ -49,11 +49,6 @@ export default function Header(props) {
 									<div className="hidden sm:ml-6 sm:block">
 										<div className="flex space-x-4">
 											{navigation.map((item) => (
-												/*className={classNames(
-                          item.current
-                            ? "no-underline ",
-                            : "no-underline ",
-                        )})*/
 												<NavLink
 													key={item.name}
 													to={item.href}
@@ -69,12 +64,26 @@ export default function Header(props) {
 													{item.name}
 												</NavLink>
 											))}
-											<NavLink
-												to={loggedIn ? "/logout" : "/login"}
-												className="rounded-md px-3 py-2 text-sm font-medium hover:no-underline text-gray-300 hover:bg-gray-700 hover:text-white"
-											>
-												{loggedIn ? "Logout" : "Login"}
-											</NavLink>
+											{loggedIn ? (
+												<NavLink
+													to={"/login"}
+													onClick={() => {
+														console.log("logging out...");
+														setLoggedIn(false);
+														localStorage.clear();
+													}}
+													className="rounded-md px-3 py-2 text-sm font-medium hover:no-underline text-gray-300 hover:bg-gray-700 hover:text-white"
+												>
+													Logout
+												</NavLink>
+											) : (
+												<NavLink
+													to={"/login"}
+													className="rounded-md px-3 py-2 text-sm font-medium hover:no-underline text-gray-300 hover:bg-gray-700 hover:text-white"
+												>
+													Login
+												</NavLink>
+											)}
 										</div>
 									</div>
 								</div>
@@ -114,13 +123,26 @@ export default function Header(props) {
 										{item.name}
 									</NavLink>
 								))}
-
-								<NavLink
-									to={loggedIn ? "/logout" : "/login"}
-									className="block rounded-md px-3 py-2 text-base font-medium hover:no-underline text-gray-300 hover:bg-gray-700 hover:text-white"
-								>
-									{loggedIn ? "Logout" : "Login"}
-								</NavLink>
+								{loggedIn ? (
+									<NavLink
+										to={"/login"}
+										onClick={() => {
+											console.log("logging out...");
+											setLoggedIn(false);
+											localStorage.clear();
+										}}
+										className="block rounded-md px-3 py-2 text-base font-medium hover:no-underline text-gray-300 hover:bg-gray-700 hover:text-white"
+									>
+										Logout
+									</NavLink>
+								) : (
+									<NavLink
+										to={"/login"}
+										className="block rounded-md px-3 py-2 text-base font-medium hover:no-underline text-gray-300 hover:bg-gray-700 hover:text-white"
+									>
+										Login
+									</NavLink>
+								)}
 							</div>
 						</Disclosure.Panel>
 					</>

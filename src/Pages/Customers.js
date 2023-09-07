@@ -39,13 +39,12 @@ export default function Customers() {
 			})
 
 			.then((data) => {
-				console.log(data);
 				setCustomers(data.customers);
 			})
 			.catch((error) => {
 				console.error("Error fetching data:", error);
 			});
-	}, [navigate]);
+	}, []);
 
 	function newCustomer(name, industry) {
 		const data = { name: name, industry: industry };

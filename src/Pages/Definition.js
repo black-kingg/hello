@@ -3,42 +3,20 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import NotFound from "../Components/NotFound";
 import DefinitionSearch from "../Components/DefinitionSearch";
+import useFetch from "../Hooks/UseFetch";
 
 export default function Definition() {
-	const [word, setWord] = useState();
-	const [notFound, setNotFound] = useState(false);
+	//const [word, setWord] = useState();
+	//const [notFound, setNotFound] = useState(false);
 	let { search } = useParams();
 	const navigate = useNavigate();
-	const [error, setError] = useState(false);
-	const location = useLocation();
+	//const [error, setError] = useState(false);
+	//const location = useLocation();
+	const [word, errorStatus] = useFetch(
+		"https://api.dictionaryapi.dev/api/v2/entries/en/" + search
+	);
 
-	useEffect(() => {
-		fetch("https://api.dictionaryapi.dev/api/v2/entries/en/" + search)
-			.then((response) => {
-				if (response.status === 404) {
-					setNotFound(true);
-				} else if (response.status === 401) {
-				} else if (response.status === 500) {
-					setError(true);
-				}
-
-				if (!response.ok) {
-					setError(true);
-
-					throw new Error("Something went wrong");
-				}
-				return response.json();
-			})
-			.then((data) => {
-				setWord(data[0].meanings);
-			})
-			.catch((e) => {
-				setError(true);
-				console.log(e.message);
-			});
-	}, []);
-
-	if (notFound === true) {
+	if (errorStatus === 404) {
 		return (
 			<>
 				<NotFound />
@@ -47,7 +25,7 @@ export default function Definition() {
 		);
 	}
 
-	if (error === true) {
+	if (errorStatus) {
 		return (
 			<>
 				<p>Something went wrong</p>
@@ -58,10 +36,10 @@ export default function Definition() {
 
 	return (
 		<>
-			{word ? (
+			{word?.[0]?.meanings ? (
 				<>
 					<h1>This is a definition:</h1>
-					{word.map((meaning) => {
+					{word[0].meanings.map((meaning) => {
 						return (
 							<p key={uuidv4()}>
 								{meaning.partOfSpeech + ": "}
