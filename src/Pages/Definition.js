@@ -12,9 +12,17 @@ export default function Definition() {
 	const navigate = useNavigate();
 	//const [error, setError] = useState(false);
 	//const location = useLocation();
-	const [word, errorStatus] = useFetch(
-		"https://api.dictionaryapi.dev/api/v2/entries/en/" + search
-	);
+	const {
+		request,
+		data: [{ meanings: word }] = [{}],
+		errorStatus,
+	} = useFetch("https://api.dictionaryapi.dev/api/v2/entries/en/" + search, {
+		method: "GET",
+	});
+
+	useEffect(() => {
+		request();
+	});
 
 	if (errorStatus === 404) {
 		return (
@@ -36,10 +44,10 @@ export default function Definition() {
 
 	return (
 		<>
-			{word?.[0]?.meanings ? (
+			{word ? (
 				<>
 					<h1>This is a definition:</h1>
-					{word[0].meanings.map((meaning) => {
+					{word.map((meaning) => {
 						return (
 							<p key={uuidv4()}>
 								{meaning.partOfSpeech + ": "}

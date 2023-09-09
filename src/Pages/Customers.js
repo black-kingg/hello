@@ -3,10 +3,11 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { baseUrl } from "../shared";
 import AddCustomer from "../Components/AddCustomer";
 import { LoginContext } from "../App";
+import useFetch from "../Hooks/UseFetch";
 
 export default function Customers() {
 	const [loggedIn, setLoggedIn] = useContext(LoginContext);
-	const [customers, setCustomers] = useState();
+	//const [customers, setCustomers] = useState();
 
 	const [show, setShow] = useState(false);
 
@@ -17,58 +18,34 @@ export default function Customers() {
 	const location = useLocation();
 	const navigate = useNavigate();
 
-	useEffect(() => {
-		const url = baseUrl + "api/customers/";
-		fetch(url, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: "Bearer " + localStorage.getItem("access"),
-			},
-		})
-			.then((response) => {
-				if (response.status === 401) {
-					setLoggedIn(false);
-					navigate("/login", {
-						state: {
-							previousUrl: location.pathname,
-						},
-					});
-				}
-				return response.json();
-			})
+	const url = baseUrl + "api/customers/";
+	const {
+		request,
+		appendData,
+		data: { customers } = {},
+		errorStatus,
+	} = useFetch(url, {
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: "Bearer " + localStorage.getItem("access"),
+		},
+	});
 
-			.then((data) => {
-				setCustomers(data.customers);
-			})
-			.catch((error) => {
-				console.error("Error fetching data:", error);
-			});
-	}, []);
+	useEffect(() => {
+		request();
+	});
+
+	/*useEffect(() => {
+		console.log(request, appendData, customers, errorStatus);
+	});*/
 
 	function newCustomer(name, industry) {
-		const data = { name: name, industry: industry };
-		const url = baseUrl + "api/customers/";
-		fetch(url, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(data),
-		})
-			.then((response) => {
-				if (!response.ok) {
-					throw new Error("Something went wrong");
-				}
-				return response.json();
-			})
-			.then((data) => {
-				toggleShow();
-				setCustomers([...customers, data.customer]);
-			})
-			.catch((e) => {
-				console.log(e);
-			});
+		appendData({ name: name, industry: industry });
+
+		if (!errorStatus) {
+			toggleShow();
+		}
 	}
 
 	return (
